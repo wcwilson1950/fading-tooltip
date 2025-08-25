@@ -1,0 +1,38 @@
+@startuml
+' Tooltip Finite State Machine
+
+note as N1
+All events in this diagram are mouse or timer events:
+ - enter: mouseenter
+ - move: mousemove
+ - leave: mouseleave
+ - timeout: timer event (pause/display/fade)
+ - timetick: animation timer event (fade in/out)
+end note
+[*] --> Inactive
+
+Inactive --> Pause : enter / move
+Inactive --> Inactive : leave
+
+Pause --> Pause : move
+Pause --> Inactive : leave
+Pause --> FadeIn : timeout [fadeinTime > 0]
+Pause --> Display : timeout [fadeinTime == 0]
+
+FadeIn --> FadeIn : move
+FadeIn --> FadeOut : leave
+FadeIn --> Display : timetick [opacity >= max]
+FadeIn --> FadeIn : timetick [opacity < max]
+
+Display --> Display : move
+Display --> FadeOut : leave
+Display --> FadeOut : timeout [fadeoutTime > 0]
+Display --> Inactive : timeout [fadeoutTime == 0]
+
+FadeOut --> FadeIn : enter
+FadeOut --> FadeOut : move
+FadeOut --> FadeOut : leave
+FadeOut --> Inactive : timetick [opacity <= 0]
+FadeOut --> FadeOut : timetick [opacity > 0]
+
+@enduml

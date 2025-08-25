@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>jQuery FadingTooltip Example</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Include domjon.js and jquery.domjon.js here -->
+  <!-- script src="domjon.js"></script-->
+  <script src="jquery.tooltip.js"></script>
+  <style>
+    .TestStyle {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin: 10px 0;
+    }
+    .AnotherTestStyle {
+      border: 1px solid #f00;
+      padding: 10px;
+      margin: 10px 0;
+      background: linear-gradient(135deg, #fff 60%, #fdd 100%);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25), 0 1.5px 0 #c00, 0 0.5px 0 #fff inset;
+      border-radius: 8px;
+      color: #b00;
+      font-weight: bold;
+      font-size: 1.2em;
+      text-shadow:
+        1px 1px 0 #fff,
+        2px 2px 2px #c00,
+        3px 3px 6px #0004;
+      letter-spacing: 0.03em;
+      transition: box-shadow 0.2s, background 0.2s;
+    }
+    .AnotherTestStyle:hover {
+      box-shadow: 0 6px 30px rgba(0,0,0,0.35), 0 2px 0 #c00, 0 1px 0 #fff inset;
+      background: linear-gradient(135deg, #fff 40%, #fdd 100%);
+    }
+    .columns {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+<h3 id="tests">test harness for FadingTooltip widget</h3>
+    <p>These HTML elements have tooltips defined with the HTML "title" attribute:
+    <div class="TestStyle">
+        Here are some <span id="BuiltInTooltip" title="Move your cursor a bit to the right, please.">fields with built-in tooltips</span>: 
+        <input type="text" title="Type your bank account and PIN numbers here, please ..." size=25>
+        <input type="button" title="Go ahead. Press it. What's the harm? Trust me." value="Press this button">
+    </div>
+    </p>
+    <p>These HTML elements have tooltips defined with the FadingTooltip widget:
+    <div id="tests" class="TestStyle">
+        Here are some <span id="TestLabel">more elaborate tooltips</span>: 
+        <input type="text" id="TestInput" size=25>
+        <input type="button" id="TestButton" value="Press this button">
+<label for="TestCheckbox"><input type="checkbox" id="TestCheckbox" value="Check this box"></label>
+  </div>
+  </p>
+  <hr>
+  <div id="placement-demo" class="TestStyle">
+    <strong>Tooltip tester:</strong><br>
+    <div class="columns">
+    <form id="placementForm" style="display:block;margin: 10px;width: 450px;padding: 10px; border:1px solid #ccc; border-radius:6px; background:#f9f9f9;">
+      <table style="width:100%; font-size:1em;">
+          <tr><td><label for="tooltipContent">Content:</label></td>
+            <td><textarea name="tooltipContent" id="tooltipContent" rows="2" style="width:100%"></textarea></td></tr>
+          <tr><td><label for="placement">Placement:</label></td>
+              <td><select name="placement" id="placement" style="width:98%; font-family:monospace;">
+            <option value="top">Top</option>
+            <option value="bottom">Bottom</option>
+            <option value="left">Left</option>
+            <option value="right">Right</option>
+            <option value="top-left">Top-Left</option>
+            <option value="top-right">Top-Right</option>
+            <option value="bottom-left">Bottom-Left</option>
+            <option value="bottom-right">Bottom-Right</option>
+            <option value="hover">Hover</option>
+          </select></td></tr>
+            <tr><td><label for="fadeinTime">Fade In Time (s):</label></td><td><input type="number" step="0.1" min="0" name="fadeinTime" id="fadeinTime" style="width:98%; font-family:monospace;"></td></tr>
+            <tr><td><label for="fadeoutTime">Fade Out Time (s):</label></td><td><input type="number" step="0.1" min="0" name="fadeoutTime" id="fadeoutTime" style="width:98%; font-family:monospace;"></td></tr>
+            <tr><td><label for="displayTime">Display Time (s):</label></td><td><input type="number" step="0.1" min="0" name="displayTime" id="displayTime" style="width:98%; font-family:monospace;"></td></tr>
+            <tr><td><label for="tooltipOpacity">Opacity (0-1):</label></td><td><input type="number" step="0.05" min="0" max="1" name="tooltipOpacity" id="tooltipOpacity" style="width:98%; font-family:monospace;"></td></tr>
+            <tr><td><label for="tooltipOffsetX">Offset X (px):</label></td><td><input type="number" name="tooltipOffsetX" id="tooltipOffsetX" style="width:98%; font-family:monospace;"></td></tr>
+            <tr><td><label for="tooltipOffsetY">Offset Y (px):</label></td><td><input type="number" name="tooltipOffsetY" id="tooltipOffsetY" style="width:98%; font-family:monospace;"></td></tr>
+            <tr><td>&nbsp;</td><td>
+        <button type="button" id="placementOk">OK</button>
+        <button type="button" id="placementCancel">Cancel</button>
+          </td></tr>
+      </table>
+    </form>
+    <div>
+      <span id="placementTarget" style="display:block;width: 200px; padding:1em; background:#eef; border:1px solid #99c; border-radius:6px; cursor:pointer; text-align:center;">Hover or focus me for tooltip</span>
+    </div>
+  </div>
+  </div>
+  </div>
+
+<script>
+    (function($) {
+        $(document).ready(function() {
+            $("#TestLabel").tooltip( "Move your cursor a bit to the right, please ...");
+            $("#TestInput").tooltip(`Type the following, <i>please</i>:
+            <ul compact style="margin-top: 0; margin-bottom: 0">
+                                <li>your bank account number</li>
+                                <li>your PIN number</li>
+                                </ul>
+                                <i>Thank you</i> in advance.`,
+                                { fadeinTime: 3, fadeoutTime: 5, placement: 'bottom', tooltipOffsetY: 5 } );
+
+            $("#TestButton").tooltip(` <img src="smiley.gif" align="absmiddle">
+                                <big>Go ahead.</big> 
+                                Press it.
+                                <small>What's the harm? <small>Trust me.</small></small>`, 
+                                { tooltipOpacity: 1, 
+                                  tooltipClass: "AnotherTestStyle",
+                                  pauseTime: 2,
+                                  fadeinTime: 0.5, 
+                                  displayTime: 5, 
+                                  fadeoutTime: 10,
+                                  trace: true } );  
+            $("#TestCheckbox").tooltip("Check this box to agree with the terms and conditions.",
+              { trace: true } );
+            // Placement demo
+            $("#placementTarget").tooltip("This is a tooltip with dynamic placement.",
+              { placement: 'top' } );
+              // Property sheet logic
+              const defaultOptions = {
+                placement: 'top', fadeinTime: 1, fadeoutTime: 3, displayTime: 10, tooltipOpacity: 1, tooltipOffsetX: 0, tooltipOffsetY: 0, tooltipContent: 'This is a tooltip with dynamic placement.'
+              };
+              function getCurrentTooltipOptions() {
+                const opts = $("#placementTarget").getTooltipOptions();
+                return opts;
+              }
+              function getCurrentTooltipContents() {
+                const contents = $("#placementTarget").getTooltipContents();
+                if (typeof contents === "string") {
+                  return contents;
+                } else if (contents instanceof jQuery) {
+                  return contents.html();
+                } else { // its a node
+                  return contents.outerHTML;
+                }
+
+              }
+              function setFormFromOptions(opts) {
+                $("#tooltipContent").val(getCurrentTooltipContents());
+                $("#placement").val(opts.placement);
+                $("#fadeinTime").val(opts.fadeinTime);
+                $("#fadeoutTime").val(opts.fadeoutTime);
+                $("#displayTime").val(opts.displayTime);
+                $("#tooltipOpacity").val(opts.tooltipOpacity);
+                $("#tooltipOffsetX").val(opts.tooltipOffsetX);
+                $("#tooltipOffsetY").val(opts.tooltipOffsetY);
+              }
+              function getOptionsFromForm() {
+                return {
+                  placement: $("#placement").val(),
+                  fadeinTime: parseFloat($("#fadeinTime").val()),
+                  fadeoutTime: parseFloat($("#fadeoutTime").val()),
+                  displayTime: parseFloat($("#displayTime").val()),
+                  tooltipOpacity: parseFloat($("#tooltipOpacity").val()),
+                  tooltipOffsetX: parseInt($("#tooltipOffsetX").val(), 10),
+                  tooltipOffsetY: parseInt($("#tooltipOffsetY").val(), 10)
+                };
+              }
+              function getContentFromForm() {
+                return $("#tooltipContent").val();
+              }
+              // Initialize form with current options
+              setFormFromOptions(getCurrentTooltipOptions());
+              // OK button: apply changes
+              $('#placementOk').on('click', function() {
+                const opts = getOptionsFromForm();
+                const content = getContentFromForm();
+                $("#placementTarget").tooltip('options', opts);
+                if (content !== getCurrentTooltipContents()) {
+                  $("#placementTarget").setTooltipContents(content);
+                }
+              });
+              // Cancel button: reset form to current options
+              $('#placementCancel').on('click', function() {
+                setFormFromOptions(getCurrentTooltipOptions());
+              });
+              // Also update form if tooltip is changed externally
+              $('.TestStyle>span[title],.TestStyle>input[title]').tooltip();
+        });
+    })(jQuery);
+
+</script>
+
+</body>
+</html>
