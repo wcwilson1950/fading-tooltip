@@ -1,40 +1,47 @@
 # Fading Tooltip
 
 ## Description
+
 A lightweight jQuery plugin for tooltips that fade in and out smoothly. Easily add informative tooltips to any element with customizable fade effects.
 
 ## Features
+
 - Simple integration with jQuery
 - Smooth fade-in and fade-out animations
 - Customizable appearance and timing
 - Works with any HTML element
 
 ## Demo
+
 ![Tooltip Demo](smiley.gif)
 
 Open `jquery.tooltip.html` in your browser to see a demo.
 
 ## Installation
+
 1. Download or clone this repository.
 2. Include jQuery and `jquery.tooltip.js` in your HTML file:
 	 ```html
-	 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	 <script src="jquery.tooltip.js"></script>
 	 ```
 
 ## Usage
+
 1. Add a `title` attribute to any element you want to have a tooltip. Initialize the plugin with:
+
 ```js
 
 $(function() {
-	$('[selector]').tooltip();
+ $('<selector>').tooltip();
 });
 ```
 
 2. Add a tooltip with content, which might include html tags, and options, which are not required.
+
 ```js
 $(function() {
-	$('[selector]').tooltip(content, options);
+ $('<selector>').tooltip(content, options);
 });
 ```
 
@@ -58,7 +65,7 @@ placement values are: hover, top, bottom, left, right, top-left, top-right, bott
 Example usage:
 
 ```js
-$('[selector]').tooltip({
+$('<selector>').tooltip({
 	placement: $("#placement").val(),
 	fadeinTime: 3,
 	fadeoutTime: 3,
@@ -68,19 +75,23 @@ $('[selector]').tooltip({
 	tooltipOffsetY: 10
 });
 ```
+
 To change options use, setTooltipOptions:
+
 ```js
-$(['selector']).tooltip('options',options);
+$(<'selector'>).tooltip('options',options);
 ```
-To change the content, 
+
+To change the content,
+
 ```js
-$('[selector]').setTooltipContents(content);
+$('<selector>').setTooltipContents(content);
 
 To get the current options, use:
-$('[selector]').getTooltipOptions();
+$('<selector>').getTooltipOptions();
 
 To get current contents, use:
-$('[selector]').getTooltipContents();
+$('<selector>').getTooltipContents();
 
 ## Browser Compatibility
 Tested in all modern browsers.
@@ -89,8 +100,10 @@ Tested in all modern browsers.
 Pull requests and suggestions are welcome!
 
 ## License
+
 MIT License
 
 ## Credits
+
 This is inspired by Edward Pring of IBM, Finite state machines in JavaScript, Parts 1, 2, 3, 2007. This was my first introduction to finite state machines. The writing was straightforward, comprehensive and enjoyable. I read this many years ago and just found the original on one of my home servers. I decided to update it to current standards and implement it as a jquery plugin. That wasn't really necessary, but it was instructive for me.
-Various plugins
+Various plugins developed for jQuery.
